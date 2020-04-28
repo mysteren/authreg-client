@@ -1,6 +1,6 @@
 {
-  "name": "admin-two-vue-bulma-dashboard",
-  "version": "1.1.7",
+  "name": "authreg-webclient2",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

@@ -7,6 +7,7 @@ import Vue from 'vue'
 import Buefy from 'buefy'
 
 /* Router & Store */
+import api from './api'
 import router from './router'
 import store from './store'
 
@@ -31,6 +32,8 @@ router.afterEach(to => {
 })
 
 Vue.config.productionTip = false
+
+Vue.prototype.$http = api
 
 Vue.use(Buefy)
 
