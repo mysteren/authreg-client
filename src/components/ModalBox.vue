@@ -2,15 +2,15 @@
   <b-modal :active.sync="isModalActive" has-modal-card>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">Confirm action</p>
+        <p class="modal-card-title">Подтвержение действия</p>
       </header>
       <section class="modal-card-body">
-        <p>This will permanently delete <b>{{ trashObjectName }}</b></p>
-        <p>Action can not be undone.</p>
+        <p>Удалить запись <b>{{ trashObjectName }}</b> ?</p>
+        <p>Действие безвозвратно.</p>
       </section>
       <footer class="modal-card-foot">
-        <button class="button" type="button" @click="cancel">Cancel</button>
-        <button class="button is-danger" @click="confirm">Delete</button>
+        <button class="button" type="button" @click="cancel">Отмена</button>
+        <button class="button is-danger" @click="confirm">Удалдить</button>
       </footer>
     </div>
   </b-modal>

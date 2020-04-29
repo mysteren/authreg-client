@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Tokens from '../views/Tokens/Index.vue'
+import TokensForm from '../views/Tokens/Form.vue'
 
 Vue.use(VueRouter)
 
@@ -16,6 +17,27 @@ const routes = [
     name: 'home',
     component: Home
   },
+
+  /**
+   * Entities
+   */
+  {
+    path: '/tokens/index',
+    name: 'tokens.index',
+    component: Tokens
+  },
+  {
+    path: '/tokens/new',
+    name: 'tokens.new',
+    component: TokensForm
+  },
+  {
+    path: '/tokens/:id',
+    name: 'tokens.edit',
+    component: TokensForm,
+    props: true
+  },
+
   {
     // Document title tag
     // We combine it with defaultDocumentTitle set in `src/main.js` on router.afterEach hook

@@ -2,16 +2,19 @@
   <section class="section">
     <title-bar>
       Токены
-      <router-link to="/tariffs/new" class="button" slot="button">
+      <router-link to="/tokens/new" class="button" slot="button">
         Новая запись
       </router-link>
     </title-bar>
 
-    <card-component class="has-table" title="Clients" icon="account-multiple">
-      <!-- <modal-box :is-active="isModalActive" :trash-object-name="trashObjectName" @confirm="trashConfirm"
-               @cancel="trashCancel"/> -->
+    <card-component class="has-table">
+      <modal-box
+        :is-active="isModalActive"
+        :trash-object-name="trashObjectName"
+        @confirm="trashConfirm"
+        @cancel="trashCancel"/>
       <b-table
-          :checkable="checkable"
+          :checkable="false"
           :loading="isLoading"
           :paginated="paginated"
           :per-page="perPage"
@@ -21,9 +24,6 @@
           :data='records'>
 
         <template slot-scope="props">
-          <b-table-column label="№" field="number" sortable>
-            {{ props.row.key }}
-          </b-table-column>
           <b-table-column label="Ключ" field="key" sortable>
             {{ props.row.key }}
           </b-table-column>
@@ -35,9 +35,9 @@
           </b-table-column>
           <b-table-column custom-key="actions" class="is-actions-cell">
             <div class="buttons is-right">
-              <button class="button is-small is-primary" type="button">
+              <router-link :to="{name:'tokens.edit', params: {id: props.row.id}}" class="button is-small is-primary">
                 <b-icon icon="eye" custom-size="default"/>
-              </button>
+              </router-link>
               <button class="button is-small is-danger" type="button" @click.prevent="trashModal(props.row)">
                 <b-icon icon="trash-can" custom-size="default"/>
               </button>
@@ -71,7 +71,7 @@
 import { mapState } from 'vuex'
 
 import CardComponent from '@/components/CardComponent'
-// import ModalBox from '@/components/ModalBox'
+import ModalBox from '@/components/ModalBox'
 import TitleBar from '@/components/TitleBar'
 // import HeroBar from '@/components/HeroBar'
 // import CardToolbar from '@/components/CardToolbar'
@@ -83,13 +83,15 @@ export default {
     // ModalTrashBox,
     // CardToolbar,
     TitleBar,
-    // ModalBox,
+    ModalBox,
     CardComponent
   },
   data () {
     return {
+      checkable: true,
       isModalActive: false,
       trashObject: null,
+      trashObjectName: null,
       records: [],
       isLoading: false,
       paginated: false,
@@ -101,6 +103,9 @@ export default {
     ...mapState([
       'userName'
     ])
+  },
+  created () {
+    this.getRecordsData()
   },
   methods: {
     getRecordsData () {
@@ -126,10 +131,51 @@ export default {
             queue: false
           })
         })
+    },
+    trashModal (trashObject = null) {
+      console.log(trashObject)
+      if (trashObject) {
+        this.trashObject = trashObject
+        this.isModalActive = true
+        this.trashObjectName = trashObject.key
+      }
+    },
+    trashConfirm () {
+      const url = `/tokens/${this.trashObject.id}`
+      const method = 'delete'
+      const data = null
+
+      this.isModalActive = false
+
+      this.$http({
+        method,
+        url,
+        data
+      }).then(r => {
+        let count = 0
+        if (r.data.data) {
+          count = r.data.data
+          this.getRecordsData()
+        }
+
+        this.trashObject = null
+        this.checkedRows = []
+
+        this.$buefy.snackbar.open({
+          message: `Удалено обьектов ${count}`,
+          queue: false
+        })
+      }).catch(err => {
+        this.$buefy.toast.open({
+          message: `Ошибка: ${err.message}`,
+          type: 'is-danger',
+          queue: false
+        })
+      })
+    },
+    trashCancel () {
+      this.isModalActive = false
     }
-  },
-  created () {
-    this.getRecordsData()
   }
 }
 </script>
