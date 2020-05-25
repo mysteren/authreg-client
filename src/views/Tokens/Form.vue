@@ -139,8 +139,8 @@ export default {
         data: this.form
       }).then(r => {
         if (!this.id && r.data.data.id) {
-          this.$router.push({ name: 'entities.edit', params: { id: r.data.data.id } })
-
+          this.$router.push({ name: 'tokens.edit', params: { id: r.data.data.id } })
+          this.item = r.data.data
           this.$buefy.snackbar.open({
             message: 'Запись создана',
             queue: false
@@ -175,3 +175,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+div.jsoneditor {
+  overflow: visible;
+}
+div.jsoneditor-tree {
+  overflow: visible;
+}
+</style>

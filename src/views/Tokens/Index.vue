@@ -95,7 +95,7 @@ export default {
       records: [],
       isLoading: false,
       paginated: false,
-      perPage: 10,
+      perPage: 50,
       checkedRows: []
     }
   },

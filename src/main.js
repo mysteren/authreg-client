@@ -18,7 +18,7 @@ import './registerServiceWorker'
 import App from './App.vue'
 
 /* Default title tag */
-const defaultDocumentTitle = 'Admin Null Bulma'
+const defaultDocumentTitle = 'AUTHREG'
 
 /* Collapse mobile aside menu on route change & set document title from route meta */
 router.afterEach(to => {
@@ -29,6 +29,12 @@ router.afterEach(to => {
   } else {
     document.title = defaultDocumentTitle
   }
+})
+
+router.beforeEach((to, from, next) => {
+  next()
+  // if (to.name !== 'Login' /* && !isAuthenticated */) next({ name: 'Login' })
+  // else next()
 })
 
 Vue.config.productionTip = false

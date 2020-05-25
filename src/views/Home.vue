@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <title-bar>
-      Welcome, {{ userName }}!
+      Welcome!
     </title-bar>
   </section>
 </template>
