@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="navbar-menu fadeIn animated faster" :class="{'is-active':isMenuNavBarActive}">
-      <div class="navbar-end">
+      <div v-if="isAuth()" class="navbar-end">
         <nav-bar-menu class="has-user-avatar">
           <!-- <div class="is-user-avatar">
             <img :src="userAvatar" :alt="userName">
@@ -63,7 +63,7 @@
             <img :src="userAvatar" :alt="userName">
           </div> -->
           <div class="is-user-name">
-            <span>Пользователь: {{ userName }}</span>
+            <span>Пользователь: {{ getUserName() }}</span>
           </div>
 
           <div slot="dropdown" class="navbar-dropdown">
@@ -80,7 +80,7 @@
               <span>Messages</span>
             </a>
             <hr class="navbar-divider"> -->
-            <a class="navbar-item">
+            <a class="navbar-item" @click="logout">
               <!-- <b-icon icon="logout" custom-size="default"></b-icon> -->
               <span>Выход</span>
             </a>
@@ -121,8 +121,7 @@ export default {
       return this.isAsideMobileExpanded ? 'backburger' : 'forwardburger'
     },
     ...mapState([
-      'userName',
-      'userAvatar',
+      'auth',
       'isNavBarVisible',
       'isAsideMobileExpanded'
     ])
@@ -135,10 +134,19 @@ export default {
       this.isMenuNavBarActive = (!this.isMenuNavBarActive)
     },
     logout () {
-      this.$buefy.snackbar.open({
-        message: 'Log out clicked',
-        queue: false
-      })
+      this.$store.dispatch('auth/logout')
+      this.$router.push('/login')
+    },
+    isAuth () {
+      console.log(this.auth)
+      return this.auth && this.auth.user
+    },
+    getUserName () {
+      if (this.auth && this.auth.user) {
+        return this.auth.user.userName
+      } else {
+        return null
+      }
     }
   }
 }

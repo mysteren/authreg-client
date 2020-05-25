@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Tokens from '../views/Tokens/Index.vue'
-import TokensForm from '../views/Tokens/Form.vue'
+import Login from '../views/Auth/Login.vue'
+// import Tokens from '../views/Tokens/Index.vue'
+// import TokensForm from '../views/Tokens/Form.vue'
 
 Vue.use(VueRouter)
 
@@ -17,64 +18,36 @@ const routes = [
     name: 'home',
     component: Home
   },
-
-  /**
-   * Entities
-   */
-  {
-    path: '/tokens/index',
-    name: 'tokens.index',
-    component: Tokens
-  },
-  {
-    path: '/tokens/new',
-    name: 'tokens.new',
-    component: TokensForm
-  },
-  {
-    path: '/tokens/:id',
-    name: 'tokens.edit',
-    component: TokensForm,
-    props: true
-  },
-
   {
     // Document title tag
     // We combine it with defaultDocumentTitle set in `src/main.js` on router.afterEach hook
     meta: {
-      title: 'Tokens'
+      title: 'Login'
     },
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
+
+  /**
+   * tokens
+   */
+  {
     path: '/tokens',
-    name: 'tokens',
-    component: Tokens
+    name: 'tokens.index',
+    component: () => import('../views/Tokens/Index.vue')
+  },
+  {
+    path: '/tokens/new',
+    name: 'tokens.new',
+    component: () => import('../views/Tokens/Form.vue')
+  },
+  {
+    path: '/tokens/:id',
+    name: 'tokens.edit',
+    component: () => import('../views/Tokens/Form.vue'),
+    props: true
   }
-  // {
-  //   meta: {
-  //     title: 'Tables'
-  //   },
-  //   path: '/tables',
-  //   name: 'tables',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "tables" */ '../views/Tables.vue')
-  // },
-  // {
-  //   meta: {
-  //     title: 'Forms'
-  //   },
-  //   path: '/forms',
-  //   name: 'forms',
-  //   component: () => import(/* webpackChunkName: "forms" */ '../views/Forms.vue')
-  // },
-  // {
-  //   meta: {
-  //     title: 'Profile'
-  //   },
-  //   path: '/profile',
-  //   name: 'profile',
-  //   component: () => import(/* webpackChunkName: "profile" */ '../views/Profile.vue')
-  // }
 ]
 
 const router = new VueRouter({
@@ -87,6 +60,21 @@ const router = new VueRouter({
     } else {
       return { x: 0, y: 0 }
     }
+  }
+})
+
+router.beforeEach((to, from, next) => {
+  const publicPages = ['/login']
+  const authRequired = !publicPages.includes(to.path)
+  const user = JSON.parse(localStorage.getItem('user'))
+  const loggedIn = !!user
+
+  // trying to access a restricted page + not logged in
+  // redirect to login page
+  if (authRequired && !loggedIn) {
+    next('/login')
+  } else {
+    next()
   }
 })
 

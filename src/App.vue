@@ -19,12 +19,13 @@ export default {
   computed: {
   },
   created () {
+    // this.$routet
     // this.$http.defaults.headers.common.Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhZG1pbiJ9.2ja3UKLfNRsk-YwYLlc8YqILWebENqUrmMiBLAlqY58'
-    this.$store.commit('user', {
-      name: 'admin',
-      email: '',
-      avatar: ''
-    })
+    // this.$store.commit('user', {
+    //   name: 'admin',
+    //   email: '',
+    //   avatar: ''
+    // })
   }
 }
 </script>
